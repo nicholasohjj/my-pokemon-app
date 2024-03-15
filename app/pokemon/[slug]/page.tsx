@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 const getPokemon = async (slug) => {
   const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${slug}`);
   const data = await res.json();
@@ -52,7 +54,7 @@ export default async function Page({ params }) {
   return (
     <div style={{ fontFamily: 'Arial, sans-serif', maxWidth: '800px', margin: '0 auto' }}>
       <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-        <a href="/" style={{ textDecoration: 'none', color: 'blue' }}>Back to Home</a>
+        <Link href="/" style={{ textDecoration: 'none', color: 'blue' }}>Back to Home</Link>
       </div>
       
       <h2 style={{ textAlign: 'center' }}>{pokemon.name.toUpperCase()}</h2>
