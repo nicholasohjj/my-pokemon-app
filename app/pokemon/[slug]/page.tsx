@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { useTeam } from './TeamContext';
 
 const getPokemon = async (slug) => {
   const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${slug}`);
@@ -58,23 +59,21 @@ export default async function Page({ params }) {
       </div>
       
       <h2 style={{ textAlign: 'center' }}>{pokemon.name.toUpperCase()}</h2>
-      <div style={{ textAlign: 'center' }}>
+      <div style={{ textAlign: 'center', marginBottom: '20px' }}>
         <img src={spriteUrl} alt={`Sprite of ${pokemon.name}`} />
       </div>
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '20px' }}>
         <thead>
           <tr style={{ backgroundColor: '#f2f2f2' }}>
-            <th style={{ border: '1px solid #dddddd', textAlign: 'left', padding: '8px' }}>Name</th>
-            <th style={{ border: '1px solid #dddddd', textAlign: 'left', padding: '8px' }}>Description</th>
-            <th style={{ border: '1px solid #dddddd', textAlign: 'left', padding: '8px' }}>Type</th>
+            <th style={{ border: '1px solid #dddddd', textAlign: 'left', padding: '8px', color: 'black' }}>Attribute</th>
+            <th style={{ border: '1px solid #dddddd', textAlign: 'left', padding: '8px', color: 'black' }}>Value</th>
           </tr>
         </thead>
         <tbody>
           {Object.entries(pokemon).map(([key, value]) => (
             <tr key={key}>
-              <td style={{ border: '1px solid #dddddd', padding: '8px' }}>{key}</td>
+              <td style={{ border: '1px solid #dddddd', padding: '8px', fontWeight: 'bold' }}>{key.replace(/_/g, ' ')}</td>
               <td style={{ border: '1px solid #dddddd', padding: '8px' }}>{renderValue(value)}</td>
-              <td style={{ border: '1px solid #dddddd', padding: '8px' }}>{typeof value}</td>
             </tr>
           ))}
         </tbody>
