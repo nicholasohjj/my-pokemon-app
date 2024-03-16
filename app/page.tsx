@@ -1,4 +1,7 @@
-import Link from 'next/link'
+"use client"
+
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import Head from 'next/head';
 
 const styles = {
@@ -13,9 +16,16 @@ const styles = {
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center' 
+  },
+
+  searchBar: {
+    margin: '20px auto',
+    padding: '10px',
+    width: '50%',
+    borderRadius: '5px',
+    border: '1px solid #ccc',
   }
 };
-
 
 const getPokemons = async () => {
   try {
@@ -29,22 +39,44 @@ const getPokemons = async () => {
   }
 };
 
+export default function Page() {
+  const [pokemons, setPokemons] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
-export default async function Page() {
-``
-  const pokemons = await getPokemons();
-  
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getPokemons();
+      setPokemons(data);
+    };
+    fetchData();
+  }, []);
+
+  const filteredPokemons = pokemons.filter(pokemon =>
+    pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleSearch = event => {
+    setSearchTerm(event.target.value);
+  };
+
   return (
     <>
       <Head>
         <title>Pokemon List</title>
       </Head>
-      <div style= {styles.container}>
-        {pokemons.map((pokemon) => (
+      <input
+        type="text"
+        placeholder="Search Pokémon by name"
+        style={styles.searchBar}
+        value={searchTerm}
+        onChange={handleSearch}
+      />
+      <div style={styles.container}>
+        {filteredPokemons.map(pokemon => (
           <div key={pokemon.name} style={styles.card}>
             <h2>{pokemon.name}</h2>
-            {/* Extract the Pokemon ID using RegExp and template string in href */}
-            <Link href={`/pokemon/${pokemon.url.match(/\/pokemon\/(\d+)\/$/)[1]}`}> View Details
+            <Link href={`/pokemon/${pokemon.url.match(/\/pokemon\/(\d+)\/$/)[1]}`}>
+              View Details
             </Link>
           </div>
         ))}
